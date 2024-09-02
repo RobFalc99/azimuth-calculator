@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calcolatore di Azimut</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,6 +14,14 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            flex-direction: column;
+        }
+        #map {
+            height: 400px;
+            width: 80%;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .container {
             background-color: white;
@@ -21,13 +30,6 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 400px;
             width: 100%;
-        }
-        input[type="text"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
         }
         button {
             width: 100%;
@@ -48,20 +50,15 @@
     </style>
 </head>
 <body>
+    <div id="map"></div>
+
     <div class="container">
         <h2>Calcolatore di Azimut</h2>
-        <label>Latitudine Punto 1:</label>
-        <input type="text" id="lat1" placeholder="Es: 41.9275">
-        <label>Longitudine Punto 1:</label>
-        <input type="text" id="lon1" placeholder="Es: 12.6370">
-        <label>Latitudine Punto 2:</label>
-        <input type="text" id="lat2" placeholder="Es: 40.7436">
-        <label>Longitudine Punto 2:</label>
-        <input type="text" id="lon2" placeholder="Es: 14.6145">
         <button onclick="calcolaAzimut()">Calcola Azimut</button>
         <div class="result" id="result"></div>
     </div>
 
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

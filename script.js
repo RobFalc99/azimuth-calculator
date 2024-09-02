@@ -1,13 +1,23 @@
-function calcolaAzimut() {
-    const lat1 = parseFloat(document.getElementById('lat1').value);
-    const lon1 = parseFloat(document.getElementById('lon1').value);
-    const lat2 = parseFloat(document.getElementById('lat2').value);
-    const lon2 = parseFloat(document.getElementById('lon2').value);
+let map = L.map('map').setView([41.9028, 12.4964], 6);  // Centra la mappa sull'Italia
 
-    if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
-        alert('Per favore, inserisci valori numerici validi per tutte le coordinate.');
-        return;
-    }
+// Aggiungi tile layer da OpenStreetMap
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+}).addTo(map);
+
+// Crea due marker per selezionare i punti
+let marker1 = L.marker([41.9275, 12.6370], {draggable: true}).addTo(map);
+let marker2 = L.marker([40.7436, 14.6145], {draggable: true}).addTo(map);
+
+// Aggiungi un popup al marker del Punto 1
+marker1.bindPopup('Tu sei qui').openPopup();
+
+// Funzione per calcolare l'azimut
+function calcolaAzimut() {
+    const lat1 = marker1.getLatLng().lat;
+    const lon1 = marker1.getLatLng().lng;
+    const lat2 = marker2.getLatLng().lat;
+    const lon2 = marker2.getLatLng().lng;
 
     // Converti le coordinate in radianti
     const lat1Rad = toRadians(lat1);
