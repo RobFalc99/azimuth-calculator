@@ -42,6 +42,9 @@ function calcolaAzimut() {
 
     // Visualizza il risultato
     document.getElementById('result').textContent = `L'azimut da Punto 1 a Punto 2 è di ${azimuth.toFixed(2)} gradi.`;
+
+    // Aggiorna la bussola con l'azimut calcolato
+    rotateArrow(azimuth);
 }
 
 function toRadians(degrees) {
@@ -50,4 +53,24 @@ function toRadians(degrees) {
 
 function toDegrees(radians) {
     return radians * (180 / Math.PI);
+}
+
+// Funzione per ruotare la freccia della bussola
+function rotateArrow(azimuth) {
+    const arrow = document.getElementById('arrow');
+    arrow.style.transform = `translateX(-50%) rotate(${azimuth}deg)`;
+}
+
+// Funzione per gestire l'orientamento del dispositivo
+function handleOrientation(event) {
+    const compassHeading = event.alpha;  // Alpha rappresenta l'orientamento rispetto al nord
+    const arrow = document.getElementById('arrow');
+    arrow.style.transform = `translateX(-50%) rotate(${compassHeading}deg)`;
+}
+
+// Aggiungi l'evento per l'orientamento del dispositivo
+if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', handleOrientation, true);
+} else {
+    alert("Il tuo dispositivo non supporta l'orientamento del dispositivo.");
 }

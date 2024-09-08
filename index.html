@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calcolatore di Azimut</title>
+    <title>Calcolatore di Azimut con Bussola</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         body {
@@ -47,6 +47,26 @@
             margin-top: 20px;
             font-size: 18px;
         }
+        #compass {
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Compass_Card_Blank.svg/1024px-Compass_Card_Blank.svg.png');
+            background-size: cover;
+            border-radius: 50%;
+            position: relative;
+        }
+        #arrow {
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 50px solid red;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
     </style>
 </head>
 <body>
@@ -56,9 +76,10 @@
         <h2>Calcolatore di Azimut</h2>
         <button onclick="calcolaAzimut()">Calcola Azimut</button>
         <div class="result" id="result"></div>
+        <div id="compass">
+            <div id="arrow"></div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+    <script src="script.js
