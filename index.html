@@ -4,72 +4,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trova il Tuo Amore - Azimuth</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <title>Dove devo guardare</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;700&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-
-    <!-- Sezione Hero con sfondo -->
-    <section class="hero" id="hero">
-        <div class="hero-content">
-            <h1>Trova il Tuo Amore con l'Azimuth 💖</h1>
-            <p>Scopri in che direzione si trova chi ami!</p>
-            <div class="scroll-hint">⬇ Scorri per iniziare il viaggio ⬇</div>
-        </div>
-    </section>
-
-    <!-- Sezione spiegazione Azimuth -->
-    <section class="info-section">
-        <h2>Cos'è l'Azimuth?</h2>
-        <p>
-            L'azimuth è un angolo che misura la direzione di un oggetto rispetto al nord. Puoi usarlo per orientarti e
-            puntare verso una posizione specifica, ad esempio il luogo dove si trova la persona amata.
-        </p>
-        <p>
-            Inserisci i due luoghi, trova la tua direzione e segui l'azimuth per avvicinarti sempre di più alla tua
-            metà.
-        </p>
-    </section>
-
-    <!-- Sezione della Mappa -->
-    <section id="map-section" class="scroll-section">
-        <div class="section-title">Trova la tua direzione 🌍</div>
-        <div id="map"></div>
-        <div class="controls">
-            <button id="locateBtn" class="scroll-btn">Tu sei qui 💫</button>
-            <input type="text" id="addressInput" placeholder="Inserisci un indirizzo" />
-            <ul id="suggestions" class="suggestions-list"></ul>
-            <button id="calculateBtn" class="scroll-btn">Calcola Azimuth 💞</button>
-        </div>
-        <div id="result"></div>
-    </section>
-
-    <!-- Bottone in fondo per calcolare l'Azimuth -->
-    <section class="final-section">
-        <button id="finalCalculateBtn" class="scroll-btn">Calcola l'Azimuth Finale 💖</button>
-    </section>
-
-    <!-- Popup per l'Azimuth -->
-    <div id="popup" class="popup hidden">
-        <div class="popup-content">
-            <span id="closePopup" class="close-btn">&times;</span>
-            <div id="popup-text"></div>
+    <div id="intro">
+        <div class="intro-content">
+            <h1>🌟 Dove devo guardare? 🌟</h1>
         </div>
     </div>
 
-    <!-- Footer -->
+    <header>
+        <h1>🌌 Dove devo guardare? 🧭</h1>
+        <p class="description">Trova la direzione della persona amata, calcolando l'azimuth tra le vostre posizioni. Le
+            stelle e la bussola ti guideranno. 💫🧭❤️</p>
+    </header>
+
+    <section class="intro">
+        <h2>✨ Introduzione ✨</h2>
+        <p>Immagina di guardare il cielo, cercando l'Orsa Minore 🌌. Il nostro sito ti aiuterà a trovare la tua stella
+            guida, ovunque si trovi la tua persona amata. ❤️</p>
+    </section>
+
+    <section class="map-section">
+        <h2>📍 Posizioni sulla mappa 📍</h2>
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+        <div class="location-inputs">
+            <label for="myAddress">📍 Il mio indirizzo:</label>
+            <input type="text" id="myAddress" placeholder="Inserisci il tuo indirizzo">
+            <button onclick="getLocation()">📍 Tu sei qui</button>
+
+            <label for="lovedOneAddress">💖 Indirizzo della persona amata:</label>
+            <input type="text" id="lovedOneAddress" placeholder="Inserisci l'indirizzo della persona amata"
+                oninput="searchAddress(this.value)">
+            <ul id="autocomplete-results"></ul>
+        </div>
+    </section>
+
+    <section class="result">
+        <h2>📏 Azimuth calcolato 📏</h2>
+        <h2>Azimuth: <span id="azimuthResult">0°</span></h2>
+        <p class="romantic-text">Guarda in quella direzione 🧭✨, e il cuore troverà la tua persona speciale ❤️.</p>
+    </section>
+
     <footer>
-        <p>&copy; 2024 Creato con ❤️ per te</p>
+        <p>Con tanto amore e precisione, il tuo viaggio è sempre nelle stelle ✨🌌💖</p>
     </footer>
 
-    <!-- Leaflet e Script -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="script.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="app.js"></script>
 </body>
 
 </html>
