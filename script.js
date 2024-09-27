@@ -135,10 +135,4 @@ document.getElementById('calculateAzimuthBtn').addEventListener('click', () => {
 
 window.onload = function () {
     initMap();
-
-    // Nascondere la schermata di intro al primo scroll
-    document.getElementById('intro').addEventListener('click', function () {
-        document.getElementById('intro').style.display = 'none';
-        document.querySelector('header').style.display = 'block';
-    });
 };
