@@ -65,7 +65,7 @@ function searchAddress(query, inputField) {
                         if (lovedOneMarker) {
                             map.removeLayer(lovedOneMarker);
                         }
-                        lovedOneMarker = L.marker([lat, lon]).addTo(map).bindPopup("Indirizzo della persona amata").openPopup();
+                        lovedOneMarker = L.marker([lat, lon]).addTo(map).bindPopup("Indirizzo della persona che cerchi").openPopup();
                     }
                     map.setView([lat, lon], 10);
                     document.getElementById(inputField).value = place.display_name;
@@ -101,6 +101,20 @@ function drawLine() {
 }
 
 
+// Funzione per simulare il recupero della declinazione magnetica (puoi sostituire con una chiamata API)
+function getMagneticDeclination(lat, lon) {
+    // Simulazione di una declinazione in gradi (potrebbe variare in base alla posizione)
+    // In una versione reale, utilizzeresti un'API come il World Magnetic Model
+    return 2.5; // Esempio: supponiamo una declinazione di 2.5 gradi verso Est
+}
+
+// Funzione per correggere l'azimuth usando la declinazione magnetica
+function correctAzimuthForMagneticDeclination(azimuth, declination) {
+    // Se la declinazione è positiva (Est), la sottraiamo dall'azimuth geografico
+    // Se la declinazione è negativa (Ovest), la aggiungiamo
+    return (azimuth - declination + 360) % 360; // Manteniamo l'azimuth nell'intervallo 0-360 gradi
+}
+
 // Funzione per calcolare l'azimuth tra due punti
 function calculateAzimuth(lat1, lon1, lat2, lon2) {
     const toRadians = (degrees) => degrees * Math.PI / 180;
@@ -113,24 +127,36 @@ function calculateAzimuth(lat1, lon1, lat2, lon2) {
     return (azimuth + 360) % 360; // Normalizza l'azimuth
 }
 
-// Funzione per calcolare l'azimuth al click del pulsante
+// Funzione per calcolare l'azimuth e applicare la correzione della declinazione magnetica
 document.getElementById('calculateAzimuthBtn').addEventListener('click', () => {
-    // Controlla se entrambi i marker sono presenti
     if (userMarker && lovedOneMarker) {
         const userLatLng = userMarker.getLatLng();
         const lovedOneLatLng = lovedOneMarker.getLatLng();
-        const azimuth = calculateAzimuth(userLatLng.lat, userLatLng.lng, lovedOneLatLng.lat, lovedOneLatLng.lng);
-        document.getElementById('azimuthResult').textContent = `${azimuth.toFixed(2)}°`;
+
+        // Calcola l'azimuth geografico
+        let azimuth = calculateAzimuth(userLatLng.lat, userLatLng.lng, lovedOneLatLng.lat, lovedOneLatLng.lng);
+
+        // Ottieni la declinazione magnetica in base alla posizione dell'utente (primo indirizzo)
+        const declination = getMagneticDeclination(userLatLng.lat, userLatLng.lng);
+
+        // Correggi l'azimuth per la declinazione magnetica
+        const correctedAzimuth = correctAzimuthForMagneticDeclination(azimuth, declination);
+
+        // Mostra l'azimuth corretto
+        document.getElementById('azimuthResult').textContent = `${correctedAzimuth.toFixed(2)}°`;
     } else {
         document.getElementById('azimuthResult').textContent = 'Seleziona entrambe le posizioni.';
     }
-
     // Scorri fino in fondo alla pagina
     window.scrollTo({
         top: document.body.scrollHeight,
         behavior: 'smooth'
     });
 });
+
+function openCompass() {
+    window.open("https://lamplightdev.github.io/compass/", "_blank");
+}
 
 
 window.onload = function () {

@@ -11,6 +11,18 @@ body {
     scroll-behavior: smooth;
     text-align: center;
 }
+.azimuth-description p {
+    font-size: 1.2rem;
+    color: #4a4a4a;
+    line-height: 1.6;
+    margin: 15px 0;
+    text-align: left; /* Puoi cambiarlo a center se preferisci */
+}
+
+.azimuth-description p::before {
+    margin-right: 10px;
+}
+
 
 /* Sezione di intro full screen */
 #intro {
@@ -282,4 +294,27 @@ body {
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
     z-index: 1; /* Mantiene i box sopra il pattern di sfondo */
     position: relative; /* Garantisce che i box siano sopra lo sfondo */
+}
+
+/* Sezione del bottone */
+.compass-link-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Bottone stilizzato come gli altri */
+#compassBtn {
+    background-color: #f78da7; /* Stesso colore degli altri pulsanti */
+    color: white; /* Testo bianco */
+    border: none; /* Rimuovi il bordo */
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#compassBtn:hover {
+    background-color: #f76c92; /* Stesso effetto hover degli altri pulsanti */
+    transform: scale(1.05); /* Effetto zoom al passaggio del mouse */
 }
