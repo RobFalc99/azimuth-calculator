@@ -1,76 +1,102 @@
-let map = L.map('map').setView([41.9028, 12.4964], 6);  // Centra la mappa sull'Italia
+const map = L.map('map').setView([41.9028, 12.4964], 5); // Centro sull'Italia
 
-// Aggiungi tile layer da OpenStreetMap
+// Aggiungi la mappa
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
 }).addTo(map);
 
-// Crea due marker per selezionare i punti
-let marker1 = L.marker([41.9275, 12.6370], {draggable: true}).addTo(map);
-let marker2 = L.marker([40.7436, 14.6145], {draggable: true}).addTo(map);
+// Variabili per i punti
+let userLocation = null;
+let destinationLocation = null;
+let line = null; // Variabile per la linea
 
-// Aggiungi un popup al marker del Punto 1
-marker1.bindPopup('Tu sei qui').openPopup();
+// Funzione per calcolare l'azimuth
+function calculateAzimuth(lat1, lon1, lat2, lon2) {
+    const toRadians = (degrees) => degrees * Math.PI / 180;
+    lat1 = toRadians(lat1);
+    lat2 = toRadians(lat2);
+    const deltaLon = toRadians(lon2 - lon1);
+    const x = Math.sin(deltaLon) * Math.cos(lat2);
+    const y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLon);
+    const azimuth = Math.atan2(x, y) * (180 / Math.PI);
+    return (azimuth + 360) % 360; // Normalizza l'azimuth
+}
 
-// Funzione per calcolare l'azimut
-function calcolaAzimut() {
-    const lat1 = marker1.getLatLng().lat;
-    const lon1 = marker1.getLatLng().lng;
-    const lat2 = marker2.getLatLng().lat;
-    const lon2 = marker2.getLatLng().lng;
+// Gestione del bottone "Tu sei qui"
+document.getElementById('locateBtn').addEventListener('click', () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+        userLocation = [position.coords.latitude, position.coords.longitude];
+        L.marker(userLocation).addTo(map).bindPopup('Tu sei qui').openPopup();
+        map.setView(userLocation, 7);
+    });
+});
 
-    // Converti le coordinate in radianti
-    const lat1Rad = toRadians(lat1);
-    const lon1Rad = toRadians(lon1);
-    const lat2Rad = toRadians(lat2);
-    const lon2Rad = toRadians(lon2);
+// Funzione per ottenere suggerimenti di indirizzi
+async function getAddressSuggestions(query) {
+    const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&addressdetails=1&limit=5`);
+    const data = await response.json();
+    return data;
+}
 
-    // Differenza di longitudine
-    const deltaLon = lon2Rad - lon1Rad;
+// Gestione dell'input per l'indirizzo
+document.getElementById('addressInput').addEventListener('input', async (e) => {
+    const query = e.target.value;
+    const suggestions = document.getElementById('suggestions');
+    suggestions.innerHTML = '';
 
-    // Calcolo dell'azimut
-    const x = Math.sin(deltaLon) * Math.cos(lat2Rad);
-    const y = Math.cos(lat1Rad) * Math.sin(lat2Rad) - (Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(deltaLon));
+    if (query.length > 2) {
+        const results = await getAddressSuggestions(query);
+        results.forEach(result => {
+            const li = document.createElement('li');
+            li.textContent = result.display_name;
+            li.onclick = () => {
+                destinationLocation = [result.lat, result.lon];
+                L.marker(destinationLocation).addTo(map).bindPopup('Destinazione').openPopup();
+                map.setView(destinationLocation, 7);
 
-    // Calcolo dell'azimut in gradi
-    let azimuth = toDegrees(Math.atan2(x, y));
+                if (line) {
+                    map.removeLayer(line);
+                }
+                line = L.polyline([userLocation, destinationLocation], { color: 'blue' }).addTo(map);
 
-    // Normalizzazione dell'azimut (deve essere tra 0° e 360°)
-    if (azimuth < 0) {
-        azimuth += 360;
+                // Chiudi la lista dei suggerimenti
+                suggestions.innerHTML = '';  // Nascondi la lista
+            };
+            suggestions.appendChild(li);
+        });
     }
+});
 
-    // Visualizza il risultato
-    document.getElementById('result').textContent = `L'azimut da Punto 1 a Punto 2 è di ${azimuth.toFixed(2)} gradi.`;
 
-    // Aggiorna la bussola con l'azimut calcolato
-    rotateArrow(azimuth);
-}
+// Gestione del calcolo dell'azimuth
+document.getElementById('calculateBtn').addEventListener('click', () => {
+    if (userLocation && destinationLocation) {
+        const azimuth = calculateAzimuth(userLocation[0], userLocation[1], destinationLocation[0], destinationLocation[1]);
+        const popupText = `L'azimuth tra i vostri luoghi speciali è di <strong>${azimuth.toFixed(2)} gradi</strong>.`;
 
-function toRadians(degrees) {
-    return degrees * (Math.PI / 180);
-}
+        // Mostra il popup
+        document.getElementById('popup-text').innerHTML = popupText;
+        document.getElementById('popup').classList.remove('hidden');
+    } else {
+        document.getElementById('result').innerText = 'Per favore, seleziona entrambi i punti.';
+    }
+});
 
-function toDegrees(radians) {
-    return radians * (180 / Math.PI);
-}
+// Chiudi il popup
+document.getElementById('closePopup').addEventListener('click', () => {
+    document.getElementById('popup').classList.add('hidden');
+});
 
-// Funzione per ruotare la freccia della bussola
-function rotateArrow(azimuth) {
-    const arrow = document.getElementById('arrow');
-    arrow.style.transform = `translateX(-50%) rotate(${azimuth}deg)`;
-}
+// Gestione del calcolo finale dell'azimuth
+document.getElementById('finalCalculateBtn').addEventListener('click', () => {
+    if (userLocation && destinationLocation) {
+        const azimuth = calculateAzimuth(userLocation[0], userLocation[1], destinationLocation[0], destinationLocation[1]);
+        const finalPopupText = `L'azimuth finale tra i vostri luoghi è di <strong>${azimuth.toFixed(2)} gradi</strong>.`;
 
-// Funzione per gestire l'orientamento del dispositivo
-function handleOrientation(event) {
-    const compassHeading = event.alpha;  // Alpha rappresenta l'orientamento rispetto al nord
-    const arrow = document.getElementById('arrow');
-    arrow.style.transform = `translateX(-50%) rotate(${compassHeading}deg)`;
-}
-
-// Aggiungi l'evento per l'orientamento del dispositivo
-if (window.DeviceOrientationEvent) {
-    window.addEventListener('deviceorientation', handleOrientation, true);
-} else {
-    alert("Il tuo dispositivo non supporta l'orientamento del dispositivo.");
-}
+        // Mostra il popup
+        document.getElementById('popup-text').innerHTML = finalPopupText;
+        document.getElementById('popup').classList.remove('hidden');
+    } else {
+        document.getElementById('result').innerText = 'Per favore, seleziona entrambi i punti.';
+    }
+});
