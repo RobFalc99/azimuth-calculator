@@ -21,14 +21,17 @@
 
     <header>
         <h1>🌌 Dove devo guardare? 🧭</h1>
-        <p class="description">Trova la direzione della persona amata, calcolando l'azimuth tra le vostre posizioni. Le
+        <p class="description">❤️🧭💫 Trova la direzione della persona amata, calcolando l'azimuth tra le vostre
+            posizioni. Le
             stelle e la bussola ti guideranno. 💫🧭❤️</p>
     </header>
 
     <section class="intro">
-        <h2>✨ Introduzione ✨</h2>
-        <p>Immagina di guardare il cielo, cercando l'Orsa Minore 🌌. Il nostro sito ti aiuterà a trovare la tua stella
-            guida, ovunque si trovi la tua persona amata. ❤️</p>
+        <h2>✨ Sai cos'è l'azimuth? ✨</h2>
+        <p>L'azimuth è l'angolo in cui devi guardare, partendo dal nord, per trovare qualcosa o qualcuno. 💖 Si misura
+            in gradi (da 0°
+            a 360°) con una bussola. Prendi il nord, e poi ruoti fino al grado giusto: voilà, quella è la direzione! 🧭
+            "E se non avessi la bussola con me?" Beh, trovare la stella polare ormai te l'ho insegnato</p>
     </section>
 
     <section class="map-section">
@@ -37,29 +40,31 @@
             <div id="map"></div>
         </div>
         <div class="location-inputs">
-            <label for="myAddress">📍 Il mio indirizzo:</label>
-            <input type="text" id="myAddress" placeholder="Inserisci il tuo indirizzo">
-            <button onclick="getLocation()">📍 Tu sei qui</button>
+            <label for="myAddress">📍 La tua posizione:</label>
+            <input type="text" id="myAddress" placeholder="Inserisci il tuo indirizzo"
+                oninput="searchAddress(this.value, 'myAddress')">
+            <button onclick="getLocation()">📍 Tu sei qui 🌍</button>
 
-            <label for="lovedOneAddress">💖 Indirizzo della persona amata:</label>
+            <label for="lovedOneAddress">💖 Indirizzo della che cerchi:</label>
             <input type="text" id="lovedOneAddress" placeholder="Inserisci l'indirizzo della persona amata"
-                oninput="searchAddress(this.value)">
+                oninput="searchAddress(this.value, 'lovedOneAddress')">
             <ul id="autocomplete-results"></ul>
         </div>
+        <button id="calculateAzimuthBtn" class="big-button">💞 DOVE GUARDO? 💞</button>
     </section>
 
     <section class="result">
-        <h2>📏 Azimuth calcolato 📏</h2>
+        <h2>🌍 Azimuth calcolato 🌍</h2>
         <h2>Azimuth: <span id="azimuthResult">0°</span></h2>
-        <p class="romantic-text">Guarda in quella direzione 🧭✨, e il cuore troverà la tua persona speciale ❤️.</p>
+        <p class="romantic-text">🧭 Guarda in quella direzione , e il cuore troverà la tua persona speciale ❤️</p>
     </section>
 
     <footer>
-        <p>Con tanto amore e precisione, il tuo viaggio è sempre nelle stelle ✨🌌💖</p>
+        <p>💖🌌✨ Un pensiero per sentirci più vicini anche da lontani ✨🌌💖</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

@@ -229,3 +229,57 @@ footer {
         width: 100%;
     }
 }
+
+.big-button {
+    background-color: #f76c92;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 80%;
+}
+
+.big-button:hover {
+    background-color: #f55382;
+    transform: scale(1.05);
+}
+
+/* Sfondo del body con emoji disposte in diagonale e più vicine sia in verticale che in orizzontale */
+body {
+    font-family: 'Lora', serif;
+    background-color: #fdf0f5;
+    color: #4a4a4a;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    scroll-behavior: smooth;
+    text-align: center;
+
+    /* Sfondo emoji disposte in diagonale e molto vicine */
+    background-image: 
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Ctext x='0' y='20' font-size='20'%3E%F0%9F%92%96%F0%9F%A7%AD%F0%9F%92%9C%F0%9F%92%AB%3C/text%3E%3Ctext x='0' y='60' font-size='20'%3E%F0%9F%8C%9F%F0%9F%8C%A0%F0%9F%92%93%F0%9F%92%9D%3C/text%3E%3C/svg%3E");
+    background-size: 120px 120px; /* Emoji più vicine in diagonale e verticale */
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-attachment: fixed; /* Fissa il background durante lo scroll */
+}
+
+
+/* I box rimangono bianchi sopra lo sfondo */
+.intro, .map-section, .result {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    z-index: 1; /* Mantiene i box sopra il pattern di sfondo */
+    position: relative; /* Garantisce che i box siano sopra lo sfondo */
+}
