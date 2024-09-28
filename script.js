@@ -1,16 +1,18 @@
 // Mappa centrata sull'Italia con Leaflet.js
 let map;
-let userMarker = null;
-let lovedOneMarker = null;
-let line = null;
+let userMarker = null; // Marker per la posizione dell'utente
+let lovedOneMarker = null; // Marker per la persona amata
+let line = null; // Linea che collega i due punti
 
+// Funzione per inizializzare la mappa
 function initMap() {
-    map = L.map('map').setView([41.9028, 12.4964], 5); // Italia
+    map = L.map('map').setView([41.9028, 12.4964], 5); // Centra la mappa sull'Italia
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 }
 
+// Funzione per ottenere la posizione dell'utente
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
@@ -19,16 +21,19 @@ function getLocation() {
     }
 }
 
+// Funzione per mostrare la posizione sulla mappa e ottenere l'indirizzo tramite Nominatim
 function showPosition(position) {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
+
+    // Posiziona il marker sulla mappa
     if (userMarker) {
         map.removeLayer(userMarker);
     }
     userMarker = L.marker([lat, lon]).addTo(map).bindPopup("La tua posizione attuale").openPopup();
     map.setView([lat, lon], 10);
 
-    // Usa Nominatim per ottenere l'indirizzo
+    // Usa Nominatim per ottenere l'indirizzo e inserirlo nel campo
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
     fetch(url)
         .then(response => response.json())
@@ -36,10 +41,9 @@ function showPosition(position) {
             document.getElementById('myAddress').value = data.display_name;
         })
         .catch(err => console.error(err));
-
-    drawLine(); // Disegna la linea se entrambi i marker sono presenti
 }
 
+// Funzione per cercare un indirizzo tramite Nominatim
 function searchAddress(query, inputField) {
     if (!query || query.length < 3) return;
 
@@ -48,20 +52,16 @@ function searchAddress(query, inputField) {
         .then(response => response.json())
         .then(data => {
             const results = document.getElementById('autocomplete-results');
-            results.innerHTML = '';
+            results.innerHTML = ''; // Pulisci i risultati precedenti
 
+            // Aggiungi i risultati della ricerca all'elenco
             data.forEach(place => {
                 const li = document.createElement('li');
                 li.textContent = place.display_name;
                 li.onclick = () => {
                     const lat = place.lat;
                     const lon = place.lon;
-                    if (inputField === 'myAddress') {
-                        if (userMarker) {
-                            map.removeLayer(userMarker);
-                        }
-                        userMarker = L.marker([lat, lon]).addTo(map).bindPopup("La tua posizione").openPopup();
-                    } else if (inputField === 'lovedOneAddress') {
+                    if (inputField === 'lovedOneAddress') {
                         if (lovedOneMarker) {
                             map.removeLayer(lovedOneMarker);
                         }
@@ -78,7 +78,7 @@ function searchAddress(query, inputField) {
         .catch(err => console.error(err));
 }
 
-// Funzione per disegnare la linea tra i due punti
+// Funzione per disegnare la linea tra l'utente e la persona amata
 function drawLine() {
     if (userMarker && lovedOneMarker) {
         const userLatLng = userMarker.getLatLng();
@@ -92,27 +92,22 @@ function drawLine() {
         // Disegna la linea tra i due punti
         line = L.polyline([userLatLng, lovedOneLatLng], { color: 'blue' }).addTo(map);
 
-        // Usa fitBounds per adattare la mappa a entrambi i punti
+        // Adatta la mappa per mostrare entrambi i punti
         map.fitBounds([userLatLng, lovedOneLatLng], {
-            padding: [50, 50], // Padding opzionale per spazio extra attorno ai punti
-            maxZoom: 10 // Imposta un livello di zoom massimo per evitare zoom eccessivo
+            padding: [50, 50],
+            maxZoom: 10
         });
     }
 }
 
-
-// Funzione per simulare il recupero della declinazione magnetica (puoi sostituire con una chiamata API)
+// Funzione per simulare la declinazione magnetica (da sostituire con API reale)
 function getMagneticDeclination(lat, lon) {
-    // Simulazione di una declinazione in gradi (potrebbe variare in base alla posizione)
-    // In una versione reale, utilizzeresti un'API come il World Magnetic Model
-    return 2.5; // Esempio: supponiamo una declinazione di 2.5 gradi verso Est
+    return 2.5; // Simulazione: 2.5 gradi verso Est
 }
 
 // Funzione per correggere l'azimuth usando la declinazione magnetica
 function correctAzimuthForMagneticDeclination(azimuth, declination) {
-    // Se la declinazione è positiva (Est), la sottraiamo dall'azimuth geografico
-    // Se la declinazione è negativa (Ovest), la aggiungiamo
-    return (azimuth - declination + 360) % 360; // Manteniamo l'azimuth nell'intervallo 0-360 gradi
+    return (azimuth - declination + 360) % 360; // Mantiene l'azimuth nell'intervallo 0-360 gradi
 }
 
 // Funzione per calcolare l'azimuth tra due punti
@@ -124,10 +119,10 @@ function calculateAzimuth(lat1, lon1, lat2, lon2) {
     const x = Math.sin(deltaLon) * Math.cos(lat2);
     const y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLon);
     const azimuth = Math.atan2(x, y) * (180 / Math.PI);
-    return (azimuth + 360) % 360; // Normalizza l'azimuth
+    return (azimuth + 360) % 360;
 }
 
-// Funzione per calcolare l'azimuth e applicare la correzione della declinazione magnetica
+// Funzione per calcolare l'azimuth e correggerlo per la declinazione magnetica
 document.getElementById('calculateAzimuthBtn').addEventListener('click', () => {
     if (userMarker && lovedOneMarker) {
         const userLatLng = userMarker.getLatLng();
@@ -136,10 +131,10 @@ document.getElementById('calculateAzimuthBtn').addEventListener('click', () => {
         // Calcola l'azimuth geografico
         let azimuth = calculateAzimuth(userLatLng.lat, userLatLng.lng, lovedOneLatLng.lat, lovedOneLatLng.lng);
 
-        // Ottieni la declinazione magnetica in base alla posizione dell'utente (primo indirizzo)
+        // Ottieni la declinazione magnetica
         const declination = getMagneticDeclination(userLatLng.lat, userLatLng.lng);
 
-        // Correggi l'azimuth per la declinazione magnetica
+        // Correggi l'azimuth
         const correctedAzimuth = correctAzimuthForMagneticDeclination(azimuth, declination);
 
         // Mostra l'azimuth corretto
@@ -147,6 +142,7 @@ document.getElementById('calculateAzimuthBtn').addEventListener('click', () => {
     } else {
         document.getElementById('azimuthResult').textContent = 'Seleziona entrambe le posizioni.';
     }
+
     // Scorri fino in fondo alla pagina
     window.scrollTo({
         top: document.body.scrollHeight,
@@ -154,11 +150,12 @@ document.getElementById('calculateAzimuthBtn').addEventListener('click', () => {
     });
 });
 
+// Funzione per aprire il sito esterno della bussola
 function openCompass() {
     window.open("https://lamplightdev.github.io/compass/", "_blank");
 }
 
-
+// Inizializza la mappa al caricamento della pagina
 window.onload = function () {
     initMap();
 };

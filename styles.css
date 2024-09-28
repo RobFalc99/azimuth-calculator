@@ -58,7 +58,7 @@ header {
 
 header h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 3rem;
+    font-size: 2rem;
     margin: 0;
     animation: fadeInDown 2s ease;
 }
@@ -83,7 +83,7 @@ header h1 {
 
 .intro h2, .map-section h2, .result h2 {
     font-family: 'Playfair Display', serif;
-    font-size: 2rem;
+    font-size: 1.8rem;
     margin-bottom: 20px;
     color: #ff637d;
 }
@@ -112,8 +112,27 @@ header h1 {
 label {
     margin: 10px 0;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
+
+
+button {
+    background-color: #f78da7; /* Stesso colore degli altri pulsanti */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-bottom: 10px; /* Aggiungi spazio sotto il pulsante */
+}
+
+button:hover {
+    background-color: #f76c92;
+    transform: scale(1.05);
+}
+
 
 input, button {
     width: 80%;
@@ -131,20 +150,9 @@ input:focus, button:hover {
     transform: scale(1.05);
 }
 
-button {
-    background-color: #f78da7;
-    color: white;
-    border: none;
-    cursor: pointer;
-    width: 50%; /* Bottone non occupa tutta la larghezza del box */
-}
-
-button:hover {
-    background-color: #f76c92;
-}
 
 /* Autocomplete Results */
-ul#autocomplete-results {
+ul#autocomplete-results_ {
     list-style: none;
     padding: 0;
     margin: 10px 0;
@@ -171,7 +179,7 @@ ul#autocomplete-results li:hover {
 /* Risultato */
 .romantic-text {
     margin-top: 20px;
-    font-size: 1.4rem;
+    font-size: 1rem;
     color: #4a4a4a;
     font-style: italic;
 }
@@ -222,11 +230,11 @@ footer {
 /* Ottimizzazioni per dispositivi mobili */
 @media (max-width: 768px) {
     .intro-content h1 {
-        font-size: 2.5rem;
+        font-size: 1.2rem;
     }
 
     header h1 {
-        font-size: 2.5rem;
+        font-size: 1.2rem;
     }
 
     .map-section {

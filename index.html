@@ -5,28 +5,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dove devo guardare</title>
+    <!-- Font utilizzati nel sito -->
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;700&display=swap"
         rel="stylesheet">
+    <!-- Foglio di stile Leaflet per la mappa -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <!-- Il tuo file CSS personalizzato -->
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+    <!-- Sezione di introduzione con immagine di sfondo -->
     <div id="intro">
         <div class="intro-content">
             <h1>🌟 Dove devo guardare? 🌟</h1>
         </div>
     </div>
 
+    <!-- Sezione che spiega l'azimuth -->
     <section class="intro">
         <h2>✨ Sai cos'è l'azimuth? ✨</h2>
         <p>L'azimuth è l'angolo in cui devi guardare, partendo dal nord, per trovare qualcosa o qualcuno 💖</p>
-        <p> Si misura in gradi (da 0° a 360°) con una bussola. 🧭 </p>
-        <p></p>Prendi il nord, e poi ruoti fino al grado giusto: voilà, quella è la direzione! 👆🏻</p>
-        <p> "E se sapessi dov'è il Nord?" Beh, trovare la stella polare ormai te l'ho insegnato ⭐</p>
+        <p>Si misura in gradi (da 0° a 360°) con una bussola. 🧭</p>
+        <p>Prendi il nord, e poi ruoti fino al grado giusto: voilà, quella è la direzione! 👆🏻</p>
+        <p>"E se sapessi dov'è il Nord?" Beh, trovare la stella polare ormai te l'ho insegnato ⭐</p>
     </section>
 
+    <!-- Sezione per la mappa e input delle posizioni -->
     <section class="map-section">
         <h2>📍 Posizioni sulla mappa 📍</h2>
         <div class="map-container">
@@ -34,33 +40,39 @@
         </div>
         <div class="location-inputs">
             <label for="myAddress">📍 La tua posizione:</label>
-            <input type="text" id="myAddress" placeholder="Inserisci il tuo indirizzo"
-                oninput="searchAddress(this.value, 'myAddress')">
+            <!-- Bottone per ottenere la posizione attuale -->
             <button onclick="getLocation()">📍 Tu sei qui 🌍</button>
 
+            <!-- Campo di input per l'indirizzo della persona amata -->
             <label for="lovedOneAddress">💖 Indirizzo della persona che cerchi:</label>
             <input type="text" id="lovedOneAddress" placeholder="Inserisci l'indirizzo che cerchi"
                 oninput="searchAddress(this.value, 'lovedOneAddress')">
             <ul id="autocomplete-results"></ul>
         </div>
+        <!-- Bottone grande per calcolare l'azimuth -->
         <button id="calculateAzimuthBtn" class="big-button">💞 DOVE GUARDO? 💞</button>
     </section>
 
+    <!-- Sezione che mostra il risultato dell'azimuth -->
     <section class="result">
         <h2>🌍 Azimuth calcolato 🌍</h2>
         <h2>Azimuth: <span id="azimuthResult">0°</span></h2>
-        <p class="romantic-text">🧭 Guarda in quella direzione , e il cuore troverà la tua persona speciale ❤️</p>
+        <p class="romantic-text">🧭 Guarda in quella direzione, e il cuore troverà la tua persona speciale ❤️</p>
     </section>
 
+    <!-- Sezione del bottone per aprire il sito esterno della bussola -->
     <section class="compass-link-section">
         <button id="compassBtn" onclick="openCompass()">Non ho la bussola con me</button>
     </section>
 
+    <!-- Footer del sito -->
     <footer>
-        <p>💖🌌✨ Un pensiero per sentirci più vicini anche da lontani ✨🌌💖</p>
+        <p>💖🌌✨ No matter where ✨🌌💖</p>
     </footer>
 
+    <!-- Script Leaflet per la mappa -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- Il tuo file JavaScript personalizzato -->
     <script src="script.js"></script>
 </body>
 
